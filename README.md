@@ -1,2 +1,2 @@
 # Data-Structures-and-Algorithms
-Leaning DSA
+Learning DSA
