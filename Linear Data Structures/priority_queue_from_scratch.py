@@ -9,7 +9,7 @@ class PriorityQueue:
         if self.count == self.capacity:
             raise IndexError("queue has already reached its maximum capacity")
         if self.count == 0:
-            self.rear = 0
+            self.rear += 1
             self.queue[self.rear] = value
             self.count += 1
             return
@@ -17,15 +17,14 @@ class PriorityQueue:
         while True:
             if i == self.front:
                 break
-            if self.queue[i] > value:
-                next_idx = (i + 1) % self.capacity
-                self.queue[next_idx] = self.queue[i]
-                i = (i - 1) % self.capacity
-            else:
+            if self.queue[i] <= value:
                 break
-        insert_idx = (i + 1) % self.capacity
-        self.queue[insert_idx] = value
+            else:
+                self.queue[i + 1] = self.queue[i]
+                i = (i - 1) % self.capacity
+        i = (i + 1) % self.capacity
         self.rear = (self.rear + 1) % self.capacity
+        self.queue[i] = value
         self.count += 1
 
     def dequeue(self):
@@ -60,22 +59,22 @@ queue.enqueue(5)
 print(queue)
 queue.enqueue(7)
 print(queue)
-queue.enqueue(3)
+queue.enqueue(0)
 print(queue)
 queue.enqueue(6)
 print(queue)
-queue.enqueue(2)
+queue.enqueue(5)
 print(queue)
 
-print(queue.dequeue())
-print(queue)
-print(queue.dequeue())
-print(queue)
-print(queue.dequeue())
-print(queue)
-print(queue.dequeue())
-print(queue)
-print(queue.dequeue())
-print(queue)
-print(queue.dequeue())
-print(queue)
+# print(queue.dequeue())
+# print(queue)
+# print(queue.dequeue())
+# print(queue)
+# print(queue.dequeue())
+# print(queue)
+# print(queue.dequeue())
+# print(queue)
+# print(queue.dequeue())
+# print(queue)
+# print(queue.dequeue())
+# print(queue)
