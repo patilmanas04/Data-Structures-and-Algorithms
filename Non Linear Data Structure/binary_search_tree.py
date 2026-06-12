@@ -95,13 +95,59 @@ class BinarySearchTree:
                     queue.append(tempNode.rightChild)
             values.append(temp)
         return values
+    
+    def morrisInOrderTraversal(self, root):
+        current=root
+        values=[]
+        while current:
+            if not current.leftChild:
+                values.append(current.val)
+                current=current.rightChild
+            else:
+                pred=current.leftChild
+                while pred.rightChild and pred.rightChild!=current:
+                    pred=pred.rightChild
+                if not pred.rightChild:
+                    pred.rightChild=current
+                    current=current.leftChild
+                else:
+                    pred.rightChild=None
+                    values.append(current.val)
+                    current=current.rightChild
+        return values
+    
+    def morrisPreOrderTraversal(self, root):
+        current=root
+        values=[]
+        while current:
+            if not current.leftChild:
+                values.append(current.val)
+                current=current.rightChild
+            else:
+                pred=current.leftChild
+                while pred.rightChild and pred.rightChild!=current:
+                    pred=pred.rightChild
+                if not pred.rightChild:
+                    values.append(current.val)
+                    pred.rightChild=current
+                    current=current.leftChild
+                else:
+                    pred.rightChild=None
+                    current=current.rightChild
+        return values
 
     def traverse(self, method="pre"):
         match method:
             case "pre":
                 return self.preOrderTraversal(self.root)
+            case "mpre":
+                # Morris Pre-order traversal
+                return self.morrisPreOrderTraversal(self.root)
             case "in":
                 return self.inOrderTraversal(self.root)
+            case "min":
+                # Morris In-order traversal
+                return self.morrisInOrderTraversal(self.root)
             case "post":
                 return self.postOrderTraversal(self.root)
             case "lvl":
@@ -198,7 +244,9 @@ for i in treeValues1:
     newBST1.insert(i)
 
 print(f"Pre-order traversal: {newBST.traverse(method="pre")}")
+print(f"Morris Pre-order traversal: {newBST.traverse("mpre")}")
 print(f"In-order traversal: {newBST.traverse(method="in")}")
+print(f"Morris In-order traversal: {newBST.traverse("min")}")
 print(f"post-order traversal: {newBST.traverse(method="post")}")
 print(f"Level-order traversal: {newBST.traverse(method="lvl")}")
 # print(f"In-order traversal: {newBST.traverse(method="mkc")}") # This will throw an error
