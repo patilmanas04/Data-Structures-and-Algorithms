@@ -21,6 +21,29 @@ class Trie:
     
     current.EOS = True
 
+  def remove(self, word: str):
+    def remove_word(node: Node, index: int):
+      if index==len(word):
+        if not node.EOS:
+          raise Exception("word does not exist!")
+        node.EOS = False
+        return len(node.children)==0
+
+      char = word[index]
+
+      if not char in node.children:
+        raise Exception("word does not exist!")
+
+      should_delete_child = remove_word(node.children[char], index+1)
+
+      if should_delete_child:
+        del node.children[char]
+        return len(node.children)==0 and not node.EOS
+
+      return False
+    
+    remove_word(self.root, 0)
+
   def end_of_prefix(self, node: Node, prefix: str, index: int, prefix_len: int):
     if index>=prefix_len:
       return node
@@ -100,3 +123,12 @@ print(trie.auto_complete("zulu"))
 
 print("\nPrefix 'inter':")
 print(trie.auto_complete("inter"))
+
+print("\n Before deleting 'carpet'")
+print(trie.auto_complete("carpet"))
+trie.remove("carpet")
+print("\n After deleting 'carpet'")
+print(trie.auto_complete("carpet"))
+
+print("\nPrefix 'car':")
+print(trie.auto_complete("car"))
